@@ -1,0 +1,3 @@
+# 直接用本地二进制调用，规避 npm 11 对 --edit 参数的拦截
+# （npm 会把 --edit 当成它自己的编辑器参数，导致 commitlint 无法读取提交信息）
+node_modules/.bin/commitlint --edit "$1"

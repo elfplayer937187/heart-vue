@@ -1,0 +1,2 @@
+# 提交前对暂存文件运行 lint + format
+npx lint-staged
