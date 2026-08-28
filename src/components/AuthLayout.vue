@@ -4,7 +4,7 @@
     <div class="flex-1 h-screen items-center justify-center left-side">
       <div class="flex flex-col text-white items-center">
         <h1 class="font-bold text-4xl mt-40!">心理AI助手</h1>
-        <p class="w-[460px] text-xl text-center mb-5 leading-relaxed mt-5!">
+        <p class="w-115 text-xl text-center mb-5 leading-relaxed mt-5!">
           每个深夜，每个焦虑的时刻，我们都在这里。不必独自承受，让心与心的连接温暖您的每一天
         </p>
         <div class="w-40 h-40 rounded-full flex items-center justify-center img-ball mt-8!">
@@ -13,13 +13,15 @@
       </div>
     </div>
     <!-- 右侧内容展示 -->
-    <div class="flex-1 bg-red-500 h-screen">
+    <div class="flex flex-1 items-center justify-center h-screen">
       <router-view></router-view>
     </div>
   </div>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import iconUrl from '@/assets/images/robot-fill.png'
+</script>
 
 <style scoped>
 .left-side {

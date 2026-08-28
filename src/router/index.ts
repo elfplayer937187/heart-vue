@@ -6,11 +6,47 @@ const routes: RouteRecordRaw[] = [
     path: '/back',
     name: 'back',
     component: () => import('@/components/BackendLayout.vue'),
+    redirect: '/back/dashboard',
     children: [
+      // 首页数据分析
       {
         path: 'dashboard',
         name: 'dashboard',
-        component: () => import('@/components/MainChild/DashBoard.vue'),
+        component: () => import('@/views/DashBoard.vue'),
+        meta: {
+          title: '数据分析',
+          icon: 'PieChart',
+        },
+      },
+      // 知识面板
+      {
+        path: 'knowledge',
+        name: 'knowledge',
+        component: () => import('@/views/KowledgeBoard.vue'),
+        meta: {
+          name: '知识文章',
+          icon: 'Document',
+        },
+      },
+      // consultation咨询记录
+      {
+        path: 'consultation',
+        name: 'consultation',
+        component: () => import('@/views/ConsultationBoard.vue'),
+        meta: {
+          name: '咨询记录',
+          icon: 'Message',
+        },
+      },
+      // 情绪日志
+      {
+        path: 'emotional',
+        name: 'emotional',
+        component: () => import('@/views/EmotionalBoard.vue'),
+        meta: {
+          name: '情绪日志',
+          icon: 'User',
+        },
       },
     ],
   },
