@@ -8,6 +8,7 @@ import tailwindcss from '@tailwindcss/vite' // 1. 导入插件
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [

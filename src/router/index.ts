@@ -24,7 +24,7 @@ const routes: RouteRecordRaw[] = [
         name: 'knowledge',
         component: () => import('@/views/KowledgeBoard.vue'),
         meta: {
-          name: '知识文章',
+          title: '知识文章',
           icon: 'Document',
         },
       },
@@ -34,7 +34,7 @@ const routes: RouteRecordRaw[] = [
         name: 'consultation',
         component: () => import('@/views/ConsultationBoard.vue'),
         meta: {
-          name: '咨询记录',
+          title: '咨询记录',
           icon: 'Message',
         },
       },
@@ -44,7 +44,7 @@ const routes: RouteRecordRaw[] = [
         name: 'emotional',
         component: () => import('@/views/EmotionalBoard.vue'),
         meta: {
-          name: '情绪日志',
+          title: '情绪日志',
           icon: 'User',
         },
       },
