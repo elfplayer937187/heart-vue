@@ -18,6 +18,7 @@
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.2",
     "@tailwindcss/vite": "^4.3.3",
+    "axios": "^1.20.0",
     "element-plus": "^2.14.5",
     "pinia": "^4.0.2",
     "tailwindcss": "^4.3.3",
@@ -28,6 +29,7 @@
     "@commitlint/cli": "^21.2.2",
     "@commitlint/config-conventional": "^21.2.2",
     "@tsconfig/node24": "^24.0.4",
+    "@types/axios": "^0.9.36",
     "@types/node": "^24.13.3",
     "@vitejs/plugin-vue": "^6.0.8",
     "@vue/eslint-config-typescript": "^14.9.0",
