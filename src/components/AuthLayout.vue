@@ -13,7 +13,7 @@
       </div>
     </div>
     <!-- 右侧内容展示 -->
-    <div class="flex flex-1 items-center justify-center h-screen">
+    <div class="flex flex-1 flex-col items-center justify-center">
       <router-view></router-view>
     </div>
   </div>

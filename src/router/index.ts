@@ -1,6 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 const routes: RouteRecordRaw[] = [
+  // 默认路由
+  {
+    path: '/',
+    name: 'default',
+    redirect: '/auth',
+  },
   // 后台管理路由
   {
     path: '/back',
@@ -55,6 +61,14 @@ const routes: RouteRecordRaw[] = [
     path: '/auth',
     name: 'auth',
     component: () => import('@/components/AuthLayout.vue'),
+    redirect: '/auth/login',
+    children: [
+      {
+        path: 'login',
+        name: 'login',
+        component: () => import('@/views/AuthChild/LoginBoard.vue'),
+      },
+    ],
   },
   // 404路由
   {

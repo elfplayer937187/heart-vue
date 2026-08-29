@@ -4,7 +4,7 @@
       <!-- 顶部导航 -->
       <el-header
         :style="{ width: `calc(100% - ${asideWidth})` }"
-        class="absolute right-0 h-(--tabbar-height)! flex items-center shadow-2xl! justify-between transition-all duration-300"
+        class="absolute right-0 h-(--tabbar-height)! flex items-center shadow-xl! justify-between transition-all duration-300"
       >
         <!-- 页面标题(左侧) -->
         <div class="flex">
@@ -34,7 +34,7 @@
             </span>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item>退出登录</el-dropdown-item>
+                <el-dropdown-item @click="HandleLogout">退出登录</el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>
@@ -131,6 +131,11 @@ watch(
   },
   { immediate: true },
 )
+
+// 退出登录
+const HandleLogout = () => {
+  router.push('/auth/login')
+}
 </script>
 
 <style scoped>
