@@ -1,4 +1,5 @@
 :root {
   --aside-width: 12.5rem;
+  --aside-collapsed-width: 4rem;
   --tabbar-height: 5rem;
 }
