@@ -5,12 +5,21 @@
       :body-style="{ padding: '32px 28px' }"
       class="rounded-lg border-none! shadow-[0_6px_24px_rgba(0,0,0,0.08)] [--el-form-label-font-color:#4b5563]"
     >
+      <!-- 这是登录页面 -->
       <div class="flex flex-col items-center justify-center">
         <h2 class="text-2xl font-bold mb-3 text-center">请登录您的账户</h2>
         <p class="text-sm text-gray-500 mb-8">请输入您的账号和密码</p>
       </div>
+      <!-- 这是登录表单 -->
       <div>
-        <el-form :model="form" label-position="top" :rules="rules">
+        <el-form
+          :model="form"
+          label-position="top"
+          :rules="rules"
+          ref="formRef"
+          @submit.prevent="login"
+          @keyup.enter="login"
+        >
           <el-form-item
             prop="username"
             label="账号"
@@ -42,18 +51,28 @@
           </el-form-item>
         </el-form>
       </div>
+      <!-- 跳转注册页面 -->
+      <div class="text-center mt-5! text-gray-500 text-sm">
+        <span>没有账号?</span>
+        <span class="text-blue-500 cursor-pointer underline">去注册!</span>
+      </div>
     </el-card>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import type { FormRules } from 'element-plus'
+import { type FormRules, type FormInstance, ElMessage } from 'element-plus'
+import { UserLogin } from '@/apis/auth/auth'
+import 'element-plus/dist/index.css'
+import router from '@/router'
 // 表单数据
 const form = ref({
   username: '',
   password: '',
 })
+// 表单实例
+const formRef = ref<FormInstance>()
 // 登录按钮的加载状态
 const loading = ref(false)
 // 表单验证
@@ -95,12 +114,40 @@ const rules = ref<FormRules<typeof form.value>>({
 })
 
 // 登录逻辑
-const login = () => {
+const login = async () => {
   loading.value = true
-  // TODO: 接入真实登录逻辑
-  setTimeout(() => {
+  try {
+    // 表单验证
+    await formRef.value?.validate()
+
+    // 发起登录请求
+    const res = await UserLogin(form.value)
+
+    if (res.code === 200) {
+      ElMessage({
+        message: '登录成功',
+        type: 'success',
+      })
+      router.push('/back')
+    } else {
+      ElMessage({
+        message: res.message || '登录失败',
+        type: 'error',
+      })
+    }
+  } catch (error) {
+    // 表单验证失败
+    if ((error as any)?.message) {
+      ElMessage({
+        message: '请输入正确的账号和密码',
+        type: 'error',
+        duration: 1000,
+      })
+    }
+    // 其余错误(网络异常/后端返回等)已由拦截器统一提示,这里不重复弹窗
+  } finally {
+    // 无论成功失败,最终都关闭加载状态,避免按钮卡死
     loading.value = false
-    console.log(form.value)
-  }, 800)
+  }
 }
 </script>
