@@ -7,7 +7,7 @@ export interface BaseResponse<T> {
 }
 
 export interface BasePageResponse<T> {
-  records: T[]
+  records: T
   total: number
   size: number
   current: number

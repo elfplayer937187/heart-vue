@@ -10,6 +10,8 @@
               <component
                 :is="TransformToComponent(item.component as string)"
                 :placeholder="item.placeholder"
+                v-model="FormData[item.prop]"
+                @keyup.enter="HandleSearch"
               >
                 <!-- 如果组件是select，则显示下拉框 -->
                 <template v-if="item.component === 'select'">
@@ -56,8 +58,8 @@ const NewFormItems = computed(() => {
   FormItem.forEach((item) => (item.col = { xs: 24, sm: 12, md: 8, lg: 6, xl: 6 }))
   return FormItem
 })
-// 表单数据
-const FormData = reactive({})
+// 表单数据:按每个表单项的 prop 初始化空值
+const FormData = reactive(Object.fromEntries(props.FormItem.map((item) => [item.prop, ''])))
 // 转换组件
 const TransformToComponent = (name: string) => {
   return (
@@ -72,9 +74,9 @@ const resetForm = () => {
   if (!FormRef.value) return
   FormRef.value?.resetFields()
 }
-// 搜索表单
+// 搜索表单:把表单数据一起发出去
 const HandleSearch = () => {
-  $emit('search')
+  $emit('search', FormData)
 }
 </script>
 
