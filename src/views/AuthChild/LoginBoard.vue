@@ -66,6 +66,10 @@ import { type FormRules, type FormInstance, ElMessage } from 'element-plus'
 import { UserLogin } from '@/apis/auth/auth'
 import 'element-plus/dist/index.css'
 import router from '@/router'
+import { setToken } from '@/utils/token'
+import useUserStore from '@/stores/UserStore'
+// 用户信息
+const userStore = useUserStore()
 // 表单数据
 const form = ref({
   username: '',
@@ -123,19 +127,37 @@ const login = async () => {
     // 发起登录请求
     const res = await UserLogin(form.value)
 
-    if (res.code === 200) {
+    // 成功后设置token
+    if (res.code.toString() === '200') {
       ElMessage({
         message: '登录成功',
         type: 'success',
       })
-      router.push('/back')
-    } else {
+      console.log(res)
+
+      // 存入token
+      setToken(res.data?.token || '')
+      // 设置用户信息
+      userStore.token = res.data?.token || ''
+      // 存入用户信息
+      userStore.userInfo = res.data?.userInfo || null
+      // 根据角色类型跳转
+      if (res.data?.roleType.toString() === '2') {
+        router.push('/back')
+      } else {
+        router.push('/')
+      }
+    }
+    // 登录失败
+    else {
       ElMessage({
         message: res.message || '登录失败',
         type: 'error',
       })
     }
   } catch (error) {
+    console.log(error)
+
     // 表单验证失败
     if ((error as any)?.message) {
       ElMessage({

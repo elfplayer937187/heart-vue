@@ -12,6 +12,16 @@
 <script lang="ts" setup>
 import PageHead from '@/components/PageHead.vue'
 import TableSearch from '@/components/TableSearch.vue'
+import { onMounted } from 'vue'
+import { getKnowledgeCategoryList } from '@/apis/knowledge'
+onMounted(async () => {
+  try {
+    const res = await getKnowledgeCategoryList()
+    console.log(res)
+  } catch (error) {
+    console.log(error)
+  }
+})
 export interface FormItemType {
   component: string
   placeholder?: string

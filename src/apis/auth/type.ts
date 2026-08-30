@@ -5,7 +5,7 @@ export interface LoginRequestType {
   password: string
 }
 // 用户信息类型
-export interface UserInfoType {
+export interface UserInfo {
   id: number
   username: string
   email: string
@@ -23,5 +23,10 @@ export interface UserInfoType {
   createdAt: string
   updatedAt: string
 }
+export interface UserInfoResponseType {
+  userInfo: UserInfo
+  token: string
+  roleType: number
+}
 // 用户信息响应类型
-export type ResponseUserInfoType = BaseResponse<UserInfoType>
+export type ResponseUserInfoType = BaseResponse<UserInfoResponseType | null>

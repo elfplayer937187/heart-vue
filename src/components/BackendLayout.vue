@@ -93,6 +93,9 @@ import Robot from '@/assets/images/机器人.png'
 import { computed, ref, watch } from 'vue'
 import { useConfigStore } from '@/stores/ConfigStore'
 import { storeToRefs } from 'pinia'
+import useUserStore from '@/stores/UserStore'
+// 用户信息
+const userStore = useUserStore()
 // 当前路由信息
 const route = useRoute()
 
@@ -134,6 +137,7 @@ watch(
 
 // 退出登录
 const HandleLogout = () => {
+  userStore.userLogout()
   router.push('/auth/login')
 }
 </script>
