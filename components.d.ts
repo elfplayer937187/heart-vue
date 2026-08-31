@@ -46,6 +46,7 @@ declare module 'vue' {
     MenuComponent: typeof import('./src/components/MenuComponent.vue')['default']
     NotFound: typeof import('./src/components/NotFound.vue')['default']
     PageHead: typeof import('./src/components/PageHead.vue')['default']
+    RichTextEditor: typeof import('./src/components/RichTextEditor.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TableSearch: typeof import('./src/components/TableSearch.vue')['default']

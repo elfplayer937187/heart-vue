@@ -50,11 +50,16 @@
           >
           <el-button
             type="primary"
-            @click="handleView(row)"
-            icon="Upload"
-            class="bg-green-400! border-green-400! hover:bg-green-500! hover:border-green-500!"
-            >上架</el-button
+            @click="handleUpShelf(row)"
+            :icon="row.status === 1 ? 'Download' : 'Upload'"
+            :class="
+              row.status === 1
+                ? 'bg-yellow-400! border-yellow-400! hover:bg-yellow-500! hover:border-yellow-500!'
+                : 'bg-green-400! border-green-400! hover:bg-green-500! hover:border-green-500!'
+            "
           >
+            {{ row.status === 1 ? '下架' : '上架' }}
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -67,25 +72,34 @@
       @change="handleChange"
     />
   </el-card>
-  <!-- <ArticleDialog
+  <ArticleDialog
     v-model="articleDialogVisible"
     :articleContent="articleContent"
     :categories="categoryList"
     @success="handleSuccess"
-  /> -->
+  />
 </template>
 
 <script lang="ts" setup>
 import PageHead from '@/components/PageHead.vue'
 import TableSearch from '@/components/TableSearch.vue'
 import { onMounted } from 'vue'
-import { getKnowledgeCategoryList, getKnowledgeArticleList } from '@/apis/knowledge'
+import {
+  getKnowledgeCategoryList,
+  getKnowledgeArticleList,
+  updateKnowledgeArticleStatus,
+  deleteKnowledgeArticle,
+} from '@/apis/knowledge'
 import type {
   KnowledgeArticleListRequestType,
   KnowledgeArticleItemType,
 } from '@/apis/knowledge/type'
-// import ArticleDialog from '@/components/ArticleDialog.vue'
+import ArticleDialog from '@/components/ArticleDialog.vue'
 import { ref, computed, reactive } from 'vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import 'element-plus/dist/index.css'
+// 文章内容
+const articleContent = ref(undefined)
 // 设置dialog是否可见
 const articleDialogVisible = ref(false)
 // 文章分类
@@ -180,18 +194,42 @@ const init = async () => {
 const handleEdit = (row: KnowledgeArticleItemType) => {
   console.log(row)
 }
-const handleDelete = (row: KnowledgeArticleItemType) => {
-  console.log(row)
+const handleDelete = async (row: KnowledgeArticleItemType) => {
+  await ElMessageBox.confirm('确定删除该文章吗？', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning',
+  })
+  const res = await deleteKnowledgeArticle(row.id)
+  if (res.code.toString() === '200') {
+    ElMessage({
+      type: 'success',
+      message: '文章删除成功',
+    })
+    init()
+  }
 }
-const handleView = (row: KnowledgeArticleItemType) => {
-  console.log(row)
+const handleUpShelf = async (row: KnowledgeArticleItemType) => {
+  const res = await updateKnowledgeArticleStatus(row.id, row.status === 1 ? '2' : '1')
+  if (res.code.toString() === '200') {
+    ElMessage({
+      type: 'success',
+      message: row.status === 1 ? '文章下架成功' : '文章上架成功',
+    })
+    init()
+  }
 }
 const handleAdd = () => {
   articleDialogVisible.value = true
 }
-// const handleSuccess = () => {
-//   console.log('新增成功')
-// }
+const handleSuccess = () => {
+  ElMessage({
+    type: 'success',
+    message: '文章创建成功',
+  })
+
+  init()
+}
 </script>
 
 <style scoped lang="scss"></style>

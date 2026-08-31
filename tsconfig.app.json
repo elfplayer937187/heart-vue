@@ -8,7 +8,13 @@
 
     // Path mapping for cleaner imports.
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      // @wangeditor/editor-for-vue 的 exports 缺少 types 入口，
+      // 在 moduleResolution: "bundler" 下会忽略顶层 types 字段导致找不到声明文件。
+      // 直接映射到实际的 .d.ts 绕过。
+      "@wangeditor/editor-for-vue": [
+        "./node_modules/@wangeditor/editor-for-vue/dist/src/index.d.ts"
+      ]
     },
 
     // `vue-tsc --build` produces a .tsbuildinfo file for incremental type-checking.
