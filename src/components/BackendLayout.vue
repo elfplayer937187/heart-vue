@@ -96,6 +96,7 @@ import { computed, ref, watch } from 'vue'
 import { useConfigStore } from '@/stores/ConfigStore'
 import { storeToRefs } from 'pinia'
 import useUserStore from '@/stores/UserStore'
+import { UserLogout } from '@/apis/auth/auth'
 // 用户信息
 const userStore = useUserStore()
 // 当前路由信息
@@ -138,8 +139,12 @@ watch(
 )
 
 // 退出登录
-const HandleLogout = () => {
+const HandleLogout = async () => {
+  // 后端退出登录
+  await UserLogout()
+  // 本地退出登录
   userStore.userLogout()
+  // 跳转登录页
   router.push('/auth/login')
 }
 </script>

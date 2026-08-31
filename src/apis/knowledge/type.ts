@@ -63,11 +63,11 @@ export interface KnowledgeArticleItemType {
   updatedAt: string
 }
 // 新增知识文章请求类型
-export interface ApifoxModel {
+export interface AddKnowledgeArticleRequestType {
   /**
    * 所属分类
    */
-  categoryId: number
+  categoryId: string
   /**
    * 文章内容
    */

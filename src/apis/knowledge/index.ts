@@ -6,6 +6,8 @@ import type {
   ImageUploadParamsType,
   ResponseImageUploadType,
   ResponseKnowledgeArticleStatusType,
+  AddKnowledgeArticleRequestType,
+  KnowledgeArticleStatusType,
 } from './type'
 import type { BaseResponse } from '../baseType'
 enum API {
@@ -19,6 +21,10 @@ enum API {
   UP_KNOWLEDGE_ARTICLE_URL = '/knowledge/article/{id}/status',
   // 删除知识文章
   DELETE_KNOWLEDGE_ARTICLE_URL = '/knowledge/article/{id}',
+  // 编辑知识文章
+  UPDATE_KNOWLEDGE_ARTICLE_URL = '/knowledge/article/{KnowledgeArticleId}',
+  // 获取知识文章详情
+  GET_KNOWLEDGE_ARTICLE_DETAIL_URL = '/knowledge/article/{GetKnowledgeArticleDetailId}',
 }
 // 获取知识分类列表
 export const getKnowledgeCategoryList = () =>
@@ -33,7 +39,7 @@ export const getKnowledgeArticleList = (params?: KnowledgeArticleListRequestType
     },
   )
 // 新增知识文章
-export const addKnowledgeArticle = (data: any) =>
+export const addKnowledgeArticle = (data: AddKnowledgeArticleRequestType) =>
   request.post<any, any>(API.ADD_KNOWLEDGE_ARTICLE_URL, data)
 // 上架/下架知识文章
 export const updateKnowledgeArticleStatus = (id: string, status: string) =>
@@ -61,3 +67,13 @@ export const uploadImage = (file: File, businessId: string) => {
 // 删除知识文章
 export const deleteKnowledgeArticle = (id: string) =>
   request.delete<any, BaseResponse<null>>(API.DELETE_KNOWLEDGE_ARTICLE_URL.replace('{id}', id))
+
+// 编辑知识文章
+export const updateKnowledgeArticle = (id: string, data: AddKnowledgeArticleRequestType) =>
+  request.put<any, any>(API.UPDATE_KNOWLEDGE_ARTICLE_URL.replace('{KnowledgeArticleId}', id), data)
+
+// 获取知识文章详情
+export const getKnowledgeArticleDetail = (id: string) =>
+  request.get<any, BaseResponse<KnowledgeArticleStatusType>>(
+    API.GET_KNOWLEDGE_ARTICLE_DETAIL_URL.replace('{GetKnowledgeArticleDetailId}', id),
+  )

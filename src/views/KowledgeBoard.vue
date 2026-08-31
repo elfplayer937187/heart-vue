@@ -73,6 +73,7 @@
     />
   </el-card>
   <ArticleDialog
+    ref="articleDialogRef"
     v-model="articleDialogVisible"
     :articleContent="articleContent"
     :categories="categoryList"
@@ -89,17 +90,21 @@ import {
   getKnowledgeArticleList,
   updateKnowledgeArticleStatus,
   deleteKnowledgeArticle,
+  getKnowledgeArticleDetail,
 } from '@/apis/knowledge'
 import type {
   KnowledgeArticleListRequestType,
   KnowledgeArticleItemType,
+  KnowledgeArticleStatusType,
 } from '@/apis/knowledge/type'
 import ArticleDialog from '@/components/ArticleDialog.vue'
 import { ref, computed, reactive } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import 'element-plus/dist/index.css'
+// 文章对话框ref
+const articleDialogRef = ref<InstanceType<typeof ArticleDialog>>()
 // 文章内容
-const articleContent = ref(undefined)
+const articleContent = ref<KnowledgeArticleStatusType>()
 // 设置dialog是否可见
 const articleDialogVisible = ref(false)
 // 文章分类
@@ -191,8 +196,14 @@ const init = async () => {
     console.log(error)
   }
 }
-const handleEdit = (row: KnowledgeArticleItemType) => {
-  console.log(row)
+const handleEdit = async (row: KnowledgeArticleItemType) => {
+  const res = await getKnowledgeArticleDetail(row.id)
+  if (res.code.toString() === '200') {
+    console.log('res.data', res.data)
+    articleContent.value = res.data
+    articleDialogVisible.value = true
+    articleDialogRef.value?.initFormData()
+  }
 }
 const handleDelete = async (row: KnowledgeArticleItemType) => {
   await ElMessageBox.confirm('确定删除该文章吗？', '提示', {

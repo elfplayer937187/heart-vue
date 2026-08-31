@@ -91,7 +91,7 @@
 <script lang="ts" setup>
 import { computed, reactive, ref, type PropType, nextTick } from 'vue'
 import { beforeUpload } from '@/utils/imageLoad'
-import { addKnowledgeArticle, uploadImage } from '@/apis/knowledge'
+import { addKnowledgeArticle, updateKnowledgeArticle, uploadImage } from '@/apis/knowledge'
 import { ElMessage, type FormInstance } from 'element-plus'
 import 'element-plus/dist/index.css'
 import { IMAGE_UPLOAD_URL } from '@/config/config'
@@ -167,6 +167,19 @@ const dialogVisible = computed({
   },
 })
 const isEdit = computed(() => (!!props.articleContent?.id ? true : false))
+// 编辑文章时，表单数据初始化
+const initFormData = () => {
+  nextTick(() => {
+    formData.id = props.articleContent?.id || ''
+    formData.title = props.articleContent?.title || ''
+    formData.content = props.articleContent?.content || ''
+    formData.categoryId = props.articleContent?.categoryName || ''
+    formData.summary = props.articleContent?.summary || ''
+    formData.tags = props.articleContent?.tags.split(',') || []
+    formData.coverImage = props.articleContent?.coverImage || ''
+    imageUrl.value = IMAGE_UPLOAD_URL + (props.articleContent?.coverImage || '')
+  })
+}
 // 富文本编辑器实例
 const editorRef = ref<IDomEditor | null>(null)
 // 关闭弹窗
@@ -218,10 +231,15 @@ const handleSubmit = async () => {
   try {
     await formRef.value?.validate()
     // 调用api
-    const res = await addKnowledgeArticle({
-      ...formData,
-      tags: formData.tags.join(','),
-    })
+    const res = isEdit.value
+      ? await updateKnowledgeArticle(formData.id, {
+          ...formData,
+          tags: formData.tags.join(','),
+        })
+      : await addKnowledgeArticle({
+          ...formData,
+          tags: formData.tags.join(','),
+        })
 
     if (res.code.toString() === '200') {
       handleClose()
@@ -233,6 +251,9 @@ const handleSubmit = async () => {
     loading.value = false
   }
 }
+defineExpose({
+  initFormData,
+})
 </script>
 
 <style scoped>
