@@ -45,7 +45,7 @@
         <!-- 侧边栏 -->
         <el-aside
           :style="{ width: asideWidth }"
-          class="h-screen bg-white transition-all! duration-300 overflow-hidden"
+          class="sticky top-0 self-start h-screen bg-white transition-all! duration-300 overflow-hidden"
         >
           <el-menu
             :collapse="tabbarFoldButton"
@@ -55,9 +55,7 @@
             :collapse-transition="false"
             @select="HandleSelectMenuItem"
           >
-            <div
-              class="flex items-center pl-5! h-(--tabbar-height)! whitespace-nowrap fixed top-0 z-10 bg-white"
-            >
+            <div class="flex items-center pl-5! h-(--tabbar-height)! bg-white">
               <el-image :src="Robot" fit="fill" class="w-10 h-10 shrink-0" />
               <div v-show="!tabbarFoldButton" class="right ml-2!">
                 <h2 class="text-md font-bold">心理健康AI助手</h2>

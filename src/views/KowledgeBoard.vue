@@ -2,12 +2,12 @@
   <el-card>
     <PageHead title="知识文章">
       <template #button>
-        <el-button type="primary">新增</el-button>
+        <el-button type="primary" @click="handleAdd">新增</el-button>
       </template>
     </PageHead>
     <TableSearch :FormItem="FormItem as any" class="mt-4!" @search="handleSearch"></TableSearch>
     <el-table :data="articalList" style="width: 90%" border class="ml-13! mt-4! mb-4!">
-      <el-table-column label="文章标题" prop="title" width="300px" align="center">
+      <el-table-column label="文章标题" prop="title" width="300px" align="center" fixed="left">
         <template #default="{ row }">
           {{ row.title }}
         </template>
@@ -32,7 +32,7 @@
           {{ row.publishedAt }}
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="300px" align="center">
+      <el-table-column label="操作" width="300px" align="center" fixed="right">
         <template #default="{ row }">
           <el-button
             type="primary"
@@ -67,6 +67,12 @@
       @change="handleChange"
     />
   </el-card>
+  <!-- <ArticleDialog
+    v-model="articleDialogVisible"
+    :articleContent="articleContent"
+    :categories="categoryList"
+    @success="handleSuccess"
+  /> -->
 </template>
 
 <script lang="ts" setup>
@@ -78,8 +84,10 @@ import type {
   KnowledgeArticleListRequestType,
   KnowledgeArticleItemType,
 } from '@/apis/knowledge/type'
-
+// import ArticleDialog from '@/components/ArticleDialog.vue'
 import { ref, computed, reactive } from 'vue'
+// 设置dialog是否可见
+const articleDialogVisible = ref(false)
 // 文章分类
 const categoryList = ref<{ label: string; value: string }[]>([])
 
@@ -178,6 +186,12 @@ const handleDelete = (row: KnowledgeArticleItemType) => {
 const handleView = (row: KnowledgeArticleItemType) => {
   console.log(row)
 }
+const handleAdd = () => {
+  articleDialogVisible.value = true
+}
+// const handleSuccess = () => {
+//   console.log('新增成功')
+// }
 </script>
 
 <style scoped lang="scss"></style>

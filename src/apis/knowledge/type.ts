@@ -62,7 +62,37 @@ export interface KnowledgeArticleItemType {
   /** 更新时间 */
   updatedAt: string
 }
-
+// 新增知识文章请求类型
+export interface ApifoxModel {
+  /**
+   * 所属分类
+   */
+  categoryId: number
+  /**
+   * 文章内容
+   */
+  content: string
+  /**
+   * 封面图片
+   */
+  coverImage: string
+  /**
+   * id
+   */
+  id: string
+  /**
+   * 文章摘要
+   */
+  summary: string
+  /**
+   * 标签
+   */
+  tags: string
+  /**
+   * 文章标题
+   */
+  title: string
+}
 // 分类列表响应
 export type ResponseKnowledgeCategoryListType = BaseResponse<KnowledgeCategoryItemType[]>
 // 文章列表响应
