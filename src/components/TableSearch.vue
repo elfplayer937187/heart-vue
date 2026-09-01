@@ -73,6 +73,7 @@ const TransformToComponent = (name: string) => {
 const resetForm = () => {
   if (!FormRef.value) return
   FormRef.value?.resetFields()
+  $emit('reset')
 }
 // 搜索表单:把表单数据一起发出去
 const HandleSearch = () => {

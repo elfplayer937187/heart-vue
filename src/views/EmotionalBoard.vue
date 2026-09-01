@@ -1,7 +1,7 @@
 <template>
   <el-card>
     <PageHead title="情绪日志" />
-    <TableSearch class="mt-4!" :FormItem="FormItem" @search="handleSearch" />
+    <TableSearch class="mt-4!" :FormItem="FormItem" @search="handleSearch" @reset="handleReset" />
     <el-table :data="emotionTableData ?? []" class="mt-4! mb-4!" style="width: 100%">
       <el-table-column label="用户姓名" prop="userId" width="90px" align="center" fixed="left">
         <template #default="{ row }">
@@ -12,12 +12,12 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="会话ID" prop="sessionId" width="100px" align="center">
+      <el-table-column label="用户id" prop="userId" width="120px" align="center" fixed="left">
         <template #default="{ row }">
-          <span class="font-medium">{{ row.id }}</span>
+          <span class="font-medium">{{ row.userId }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="记录日期" prop="recordDate" width="160px" align="center">
+      <el-table-column label="记录日期" prop="recordDate" width="140px" align="center">
         <template #default="{ row }">
           {{ row.diaryDate }}
         </template>
@@ -25,10 +25,10 @@
       <el-table-column label="情绪评分" prop="emotionScore" min-width="180px" align="center">
         <template #default="{ row }">
           <el-rate :model-value="row.moodScore" :max="10" disabled size="small" />
-          <span class="ml-2! text-sm! text-gray-500!">{{ row.moodScore }}</span>
+          <span class="ml-2! text-sm! text-gray-500! font-bold! italic!">{{ row.moodScore }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="生活指标" prop="lifeIndex" min-width="160px">
+      <el-table-column label="生活指标" prop="lifeIndex" min-width="120px">
         <template #default="{ row }">
           <span class="text-gray-600! text-sm!">{{ row.dominantEmotion }}</span>
         </template>
@@ -74,9 +74,14 @@
     >
     </el-pagination>
   </el-card>
+  <EmotionDiary
+    v-model:modelValue="emotionDiaryDialogVisible"
+    :emotionDiaryDialogInfo="emotionDiaryDialogInfo"
+  />
 </template>
 
 <script lang="ts" setup>
+import EmotionDiary from '@/components/EmotionDiary.vue'
 import PageHead from '@/components/PageHead.vue'
 import TableSearch from '@/components/TableSearch.vue'
 import type { FormItemType } from './KowledgeBoard.vue'
@@ -85,6 +90,10 @@ import { deleteEmotionDiary, getEmotionList } from '@/apis/emotions/emotion.ts'
 import type { EmotionDiaryRecord, EmotionDiaryReq } from '@/apis/emotions/type.ts'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import 'element-plus/es/components/message/style/css'
+// dialog展示信息
+const emotionDiaryDialogInfo = ref<EmotionDiaryRecord>()
+// 情绪日记详情弹窗
+const emotionDiaryDialogVisible = ref(false)
 // 总条数
 const total = ref<number>(0)
 // 列表数据
@@ -94,9 +103,9 @@ const emotionDiaryParams = reactive<EmotionDiaryReq>({
 
   dominantEmotion: '',
 
-  maxMoodScore: '',
+  maxMoodScore: 10,
 
-  minMoodScore: '',
+  minMoodScore: 1,
 
   size: 3,
 
@@ -105,6 +114,8 @@ const emotionDiaryParams = reactive<EmotionDiaryReq>({
 const initPagination = async () => {
   const res = await getEmotionList(emotionDiaryParams)
   if (res.code.toString() === '200') {
+    console.log(res.data, 'res.data')
+
     emotionTableData.value = res.data?.records
     total.value = res.data?.total ?? 0
   }
@@ -139,9 +150,17 @@ const FormItem = computed<FormItemType[]>(() => [
   },
 ])
 
+// 重置
+const handleReset = () => {
+  emotionDiaryParams.userId = ''
+  emotionDiaryParams.minMoodScore = 1
+  emotionDiaryParams.maxMoodScore = 10
+  initPagination()
+}
 // 查看详情
-const handleView = (row: any) => {
-  console.log('查看记录：', row)
+const handleView = (row: EmotionDiaryRecord) => {
+  emotionDiaryDialogVisible.value = true
+  emotionDiaryDialogInfo.value = row
 }
 // 删除
 const handleDelete = (row: EmotionDiaryRecord) => {
@@ -169,9 +188,11 @@ const handlePaginationChange = () => {
 // 处理搜索
 const handleSearch = (FormData: { emotionScore: string; userId: string }) => {
   emotionDiaryParams.userId = FormData.userId || ''
-  ;[emotionDiaryParams.maxMoodScore, emotionDiaryParams.minMoodScore] = FormData.emotionScore.split(
-    '-',
-  ) || ['', '']
+  ;[emotionDiaryParams.minMoodScore, emotionDiaryParams.maxMoodScore] = FormData.emotionScore
+    .split('-')
+    .map((item) => Number(item)) || [0, 0]
+  console.log(emotionDiaryParams, 'emotionDiaryParams')
+
   initPagination()
 }
 </script>

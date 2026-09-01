@@ -40,7 +40,20 @@ export interface EmotionDiaryRecord {
   /** 内容长度 */
   contentLength: number
 }
-
+// AI 情绪分析数据
+export interface AiEmotionAnalysis {
+  primaryEmotion: string // 主要情绪
+  emotionScore: number // 情绪评分 (0-100)
+  isNegative: boolean // 是否负面情绪
+  riskLevel: number // 风险等级 (0-3)
+  keywords: string[] // 关键词列表
+  suggestion: string // 建议
+  icon: string // 情绪图标
+  label: string // 情绪标签
+  riskDescription: string // 风险描述
+  improvementSuggestions: string[] // 改进建议列表
+  timestamp: number // 时间戳
+}
 /** 情绪日记列表请求 */
 export interface EmotionDiaryReq {
   /**
@@ -54,11 +67,11 @@ export interface EmotionDiaryReq {
   /**
    * 情绪分上限
    */
-  maxMoodScore?: string
+  maxMoodScore?: number
   /**
    * 情绪分下限
    */
-  minMoodScore?: string
+  minMoodScore?: number
   /**
    * 分页数
    */
