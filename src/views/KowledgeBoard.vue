@@ -1,12 +1,12 @@
 <template>
-  <el-card>
+  <el-card class="px-3! pl-6!">
     <PageHead title="知识文章">
       <template #button>
         <el-button type="primary" @click="handleAdd">新增</el-button>
       </template>
     </PageHead>
     <TableSearch :FormItem="FormItem as any" class="mt-4!" @search="handleSearch"></TableSearch>
-    <el-table :data="articalList" style="width: 90%" border class="ml-13! mt-4! mb-4!">
+    <el-table :data="articalList" style="width: 90%" border class="mt-4! mb-4!">
       <el-table-column label="文章标题" prop="title" width="300px" align="center" fixed="left">
         <template #default="{ row }">
           {{ row.title }}

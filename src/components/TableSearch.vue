@@ -1,6 +1,6 @@
 <template>
   <div class=" ">
-    <el-form ref="FormRef" :model="FormData" label-width="120px">
+    <el-form ref="FormRef" :model="FormData">
       <!-- 占一整行 -->
       <el-row :gutter="24">
         <template v-for="item in NewFormItems" :key="item.prop">
@@ -27,7 +27,7 @@
           </el-col>
         </template>
       </el-row>
-      <el-row class="flex ml-13! mt-4!">
+      <el-row class="flex mt-4!">
         <!-- 搜索和重置按钮（右侧） -->
         <div>
           <el-button type="primary" @click="HandleSearch">搜索</el-button>
