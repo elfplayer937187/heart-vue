@@ -38,7 +38,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'consultation',
         name: 'consultation',
-        component: () => import('@/views/ConsultationBoard.vue'),
+        component: () => import('@/views/ConsultationsBoard.vue'),
         meta: {
           title: '咨询记录',
           icon: 'Message',

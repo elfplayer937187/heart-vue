@@ -4,7 +4,7 @@
       <!-- 顶部导航 -->
       <el-header
         :style="{ width: `calc(100% - ${asideWidth})` }"
-        class="absolute right-0 h-(--tabbar-height)! flex items-center shadow-xl! justify-between transition-all duration-300"
+        class="right-0 h-(--tabbar-height)! flex items-center shadow-xl! justify-between transition-all duration-300 fixed top-0 z-10 bg-white"
       >
         <!-- 页面标题(左侧) -->
         <div class="flex">
@@ -45,7 +45,7 @@
         <!-- 侧边栏 -->
         <el-aside
           :style="{ width: asideWidth }"
-          class="h-screen bg-white transition-all! duration-300 overflow-hidden"
+          class="sticky top-0 self-start h-screen bg-white transition-all! duration-300 overflow-hidden"
         >
           <el-menu
             :collapse="tabbarFoldButton"
@@ -55,26 +55,28 @@
             :collapse-transition="false"
             @select="HandleSelectMenuItem"
           >
-            <div class="flex items-center pl-5! h-(--tabbar-height)! whitespace-nowrap">
+            <div class="flex items-center pl-5! h-(--tabbar-height)! bg-white">
               <el-image :src="Robot" fit="fill" class="w-10 h-10 shrink-0" />
               <div v-show="!tabbarFoldButton" class="right ml-2!">
                 <h2 class="text-md font-bold">心理健康AI助手</h2>
                 <p class="text-sm text-gray-400">管理后台</p>
               </div>
             </div>
-            <el-menu-item
-              :index="route.name"
-              v-for="route in allMenuItems"
-              :key="route.path"
-              class="hover:bg-pink-200! duration-200!"
-            >
-              <el-icon>
-                <component :is="route.meta?.icon" />
-              </el-icon>
-              <template #title>
-                <span>{{ route.meta?.title }}</span>
-              </template>
-            </el-menu-item>
+            <div>
+              <el-menu-item
+                :index="route.name"
+                v-for="route in allMenuItems"
+                :key="route.path"
+                class="hover:bg-pink-200! duration-200!"
+              >
+                <el-icon>
+                  <component :is="route.meta?.icon" />
+                </el-icon>
+                <template #title>
+                  <span>{{ route.meta?.title }}</span>
+                </template>
+              </el-menu-item>
+            </div>
           </el-menu>
         </el-aside>
         <!-- 主要内容区域 -->
@@ -93,6 +95,10 @@ import Robot from '@/assets/images/机器人.png'
 import { computed, ref, watch } from 'vue'
 import { useConfigStore } from '@/stores/ConfigStore'
 import { storeToRefs } from 'pinia'
+import useUserStore from '@/stores/UserStore'
+import { UserLogout } from '@/apis/auth/auth'
+// 用户信息
+const userStore = useUserStore()
 // 当前路由信息
 const route = useRoute()
 
@@ -133,7 +139,12 @@ watch(
 )
 
 // 退出登录
-const HandleLogout = () => {
+const HandleLogout = async () => {
+  // 后端退出登录
+  await UserLogout()
+  // 本地退出登录
+  userStore.userLogout()
+  // 跳转登录页
   router.push('/auth/login')
 }
 </script>
