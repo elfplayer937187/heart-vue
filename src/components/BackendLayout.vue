@@ -21,7 +21,10 @@
         <div class="flex items-center gap-2 mr-4!">
           <!-- 用户头像 -->
           <el-avatar
-            src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+            :src="
+              userInfo?.avatar ||
+              'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
+            "
             class="mr-4"
           />
           <!-- 用户名称 -->
@@ -55,7 +58,9 @@
             :collapse-transition="false"
             @select="HandleSelectMenuItem"
           >
-            <div class="flex items-center pl-5! h-(--tabbar-height)! bg-white">
+            <div
+              class="flex items-center pl-5! h-(--tabbar-height)! bg-white shadow-md! relative z-10"
+            >
               <el-image :src="Robot" fit="fill" class="w-10 h-10 shrink-0" />
               <div v-show="!tabbarFoldButton" class="right ml-2!">
                 <h2 class="text-md font-bold">心理健康AI助手</h2>
@@ -99,6 +104,7 @@ import useUserStore from '@/stores/UserStore'
 import { UserLogout } from '@/apis/auth/auth'
 // 用户信息
 const userStore = useUserStore()
+const { userInfo } = storeToRefs(userStore)
 // 当前路由信息
 const route = useRoute()
 
@@ -119,7 +125,7 @@ const asideWidth = computed(() =>
 )
 
 // 用户名称（暂定）
-const userName = ref('管理员')
+const userName = ref(userInfo.value?.displayName || '未知用户')
 const HandleSelectMenuItem = (index: string) => {
   router.push({ name: index })
 }
