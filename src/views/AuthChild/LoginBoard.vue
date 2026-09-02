@@ -67,6 +67,7 @@ import { UserLogin } from '@/apis/auth/auth'
 import 'element-plus/dist/index.css'
 import router from '@/router'
 import { setToken } from '@/utils/token'
+import { saveUserInfo } from '@/utils/userInfo'
 import useUserStore from '@/stores/UserStore'
 // 用户信息
 const userStore = useUserStore()
@@ -141,11 +142,17 @@ const login = async () => {
       userStore.token = res.data?.token || ''
       // 存入用户信息
       userStore.userInfo = res.data?.userInfo || null
+      // 存入角色信息到userInfo
+      userStore.userInfo!.userType = res.data?.roleType.toString() === '2' ? 2 : 1
+      // 持久化用户信息到localStorage,守卫才能读取到(守卫读的是localStorage而非store)
+      saveUserInfo(userStore.userInfo!)
       // 根据角色类型跳转
       if (res.data?.roleType.toString() === '2') {
         router.push('/back')
-      } else {
+      } else if (res.data?.roleType.toString() === '1') {
         router.push('/')
+      } else {
+        router.push('/notfound')
       }
     }
     // 登录失败

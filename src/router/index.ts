@@ -1,12 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
-const routes: RouteRecordRaw[] = [
-  // 默认路由
-  {
-    path: '/',
-    name: 'default',
-    redirect: '/auth',
-  },
+
+const BackendRoutes: RouteRecordRaw[] = [
   // 后台管理路由
   {
     path: '/back',
@@ -70,6 +65,36 @@ const routes: RouteRecordRaw[] = [
       },
     ],
   },
+]
+const frontendRoutes: RouteRecordRaw[] = [
+  {
+    path: '/',
+    component: () => import('@/components/FrontendLayout.vue'),
+    redirect: '/home',
+    children: [
+      {
+        path: 'home',
+        component: () => import('@/views/home.vue'),
+      },
+      {
+        path: 'consultation',
+        component: () => import('@/views/consultation.vue'),
+      },
+      {
+        path: 'emotion-diary',
+        component: () => import('@/views/emotionDiary.vue'),
+      },
+      {
+        path: 'knowledge',
+        component: () => import('@/views/frontendKnowledge.vue'),
+      },
+      {
+        path: 'knowledge/article/:id',
+        component: () => import('@/views/articleDetail.vue'),
+        props: true,
+      },
+    ],
+  },
   // 404路由
   {
     path: '/:pathMatch(.*)*',
@@ -77,9 +102,8 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/components/NotFound.vue'),
   },
 ]
-
 const router = createRouter({
-  routes,
+  routes: [...frontendRoutes, ...BackendRoutes],
   history: createWebHistory(),
 })
 
