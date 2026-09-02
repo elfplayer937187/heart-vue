@@ -54,8 +54,8 @@
             :icon="row.status === 1 ? 'Download' : 'Upload'"
             :class="
               row.status === 1
-                ? 'bg-yellow-400! border-yellow-400! hover:bg-yellow-500! hover:border-yellow-500!'
-                : 'bg-green-400! border-green-400! hover:bg-green-500! hover:border-green-500!'
+                ? 'bg-green-400! border-green-400! hover:bg-green-500! hover:border-green-500!'
+                : 'bg-gray-400! border-gray-400! hover:bg-gray-500! hover:border-gray-500!'
             "
           >
             {{ row.status === 1 ? '下架' : '上架' }}

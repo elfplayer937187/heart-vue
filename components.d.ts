@@ -46,6 +46,8 @@ declare module 'vue' {
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTag: typeof import('element-plus/es')['ElTag']
     ElUpload: typeof import('element-plus/es')['ElUpload']
+    EmotionDiary: typeof import('./src/components/EmotionDiary.vue')['default']
+    FrontendLayout: typeof import('./src/components/FrontendLayout.vue')['default']
     MenuComponent: typeof import('./src/components/MenuComponent.vue')['default']
     NotFound: typeof import('./src/components/NotFound.vue')['default']
     PageHead: typeof import('./src/components/PageHead.vue')['default']
